@@ -1,6 +1,5 @@
 package com.codewithdurgesh.blog.controllers;
 
-import com.codewithdurgesh.blog.entities.Post;
 import com.codewithdurgesh.blog.payloads.ApiResponse;
 import com.codewithdurgesh.blog.payloads.PostDto;
 import com.codewithdurgesh.blog.services.PostService;
@@ -40,8 +39,11 @@ public class PostController {
     }
 //    GetAllPosts
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPosts(){
-        List<PostDto> postDtos = this.postService.getAllPost();
+    public ResponseEntity<List<PostDto>> getAllPosts(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+    ){
+        List<PostDto> postDtos = this.postService.getAllPost(pageNumber, pageSize);
         return new ResponseEntity<>(postDtos, HttpStatus.OK );
     }
 //    GetPostByPostId
