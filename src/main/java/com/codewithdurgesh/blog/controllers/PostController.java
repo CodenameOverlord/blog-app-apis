@@ -2,6 +2,7 @@ package com.codewithdurgesh.blog.controllers;
 
 import com.codewithdurgesh.blog.payloads.ApiResponse;
 import com.codewithdurgesh.blog.payloads.PostDto;
+import com.codewithdurgesh.blog.payloads.PostResponse;
 import com.codewithdurgesh.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,12 +40,14 @@ public class PostController {
     }
 //    GetAllPosts
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPosts(
+    public ResponseEntity<PostResponse> getAllPosts(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
     ){
-        List<PostDto> postDtos = this.postService.getAllPost(pageNumber, pageSize);
-        return new ResponseEntity<>(postDtos, HttpStatus.OK );
+        PostResponse postResponse = this.postService.getAllPost(pageNumber, pageSize, sortBy, sortDir);
+        return new ResponseEntity<>(postResponse, HttpStatus.OK );
     }
 //    GetPostByPostId
     @GetMapping("/posts/{postId}")
